@@ -1,0 +1,70 @@
+import { Link, useNavigate } from "react-router-dom";
+import "./Login.css";
+
+// const navigate = useNavigate();
+const admin = { username: "admin", password: "12345" };
+// const handleClick = () => {
+//   const username = document.querySelector(".username-or-email").value;
+//   const password = document.querySelector(".password1").value;
+//   if (username === admin.username && password === admin.password) {
+//     // navigate("/chat-panel");
+//   } else {
+//   }
+// };
+const Desktop2 = () => {
+  return (
+    <div className="desktop-2">
+      <div className="desktop-2-child" />
+      <div className="desktop-2-item" />
+      <div className="frame-group">
+        <div className="rectangle-group">
+          <div className="frame-child2" />
+          <div className="frame-child3" />
+        </div>
+        <img className="group-icon1" alt="" src="/group1.svg" />
+        <div className="login2">Login</div>
+        <div className="sign-in">Sign in to your Account</div>
+        <div className="frame-child4" />
+        <div className="frame-child5" />
+
+        <form>
+          <input
+            type="text"
+            placeholder="Username or Email"
+            className="username-or-email "
+          />
+
+          <input
+            className="password1"
+            name="password"
+            placeholder="Password"
+            type="password"
+          />
+          <button className="frame-child6" />
+        </form>
+
+        <img className="group-icon2" alt="" src="/group.svg" />
+        <img className="vector-icon2" alt="" src="/vector.svg" />
+
+        <div className="login3">Login</div>
+        <div className="no-account">Don’t have an account?</div>
+        <Link className="register-here" to="/desktop-3">
+          Register here
+        </Link>
+      </div>
+      <div className="app-name2">APP_Name</div>
+      <button className="home-container">
+        <Link className="home1" to="/">
+          Home
+        </Link>
+      </button>
+      <button className="sign-up-container">
+        <Link className="sign-up2" to="/desktop-3">
+          Sign Up
+        </Link>
+      </button>
+    </div>
+  );
+};
+
+export default Desktop2;
