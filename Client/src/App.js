@@ -8,6 +8,7 @@ import {
 import Desktop1 from "./pages/Landing Page";
 import Desktop3 from "./pages/Signup";
 import Desktop2 from "./pages/Login";
+import Chatpanel from "./pages/chatpanel";
 
 function App() {
   const action = useNavigationType();
@@ -58,6 +59,7 @@ function App() {
       <Route path="/" element={<Desktop1 />} />
       <Route path="/desktop-3" element={<Desktop3 />} />
       <Route path="/desktop-2" element={<Desktop2 />} />
+      <Route path="/chat-panel" element={<Chatpanel />} />
     </Routes>
   );
 }
