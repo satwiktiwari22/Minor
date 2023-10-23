@@ -1,0 +1,46 @@
+@import url("https://fonts.googleapis.com/css2?family=Anonymous+Pro:wght@400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Calistoga:wght@400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap");
+
+
+body {
+  margin: 0;
+  line-height: normal;
+}
+
+:root {
+  /* fonts */
+  --font-anonymous-pro: "Anonymous Pro";
+  --font-calistoga: Calistoga;
+  --font-inter: Inter;
+
+  /* font sizes */
+  --font-size-3xl: 22px;
+  --font-size-46xl: 65px;
+  --font-size-6xl: 25px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-13xl: 32px;
+
+  /* Colors */
+  --color-gray: #1f1d2f;
+  --color-white: #fff;
+  --color-darkslategray: rgba(51, 49, 79, 0.2);
+  --color-mistyrose-100: #ffe1e1;
+  --color-darkorchid-100: #661cb0;
+  --color-darkorchid-200: rgba(102, 28, 176, 0.9);
+  --color-darkorchid-300: rgba(102, 28, 176, 0.59);
+  --color-darkorchid-400: rgba(102, 28, 176, 0.3);
+  --color-seagreen: #06774f;
+  --color-dimgray: rgba(110, 110, 110, 0.85);
+  --color-paleturquoise: #c7fbe9;
+  --color-mediumseagreen: #1cb07c;
+
+  /* Paddings */
+  --padding-7xs-6: 5.6px;
+
+  /* Border radiuses */
+  --br-xl: 20px;
+  --br-xs: 12px;
+  --br-11xs: 2px;
+}
