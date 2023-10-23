@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
+import { useState } from "react";
 
 // const navigate = useNavigate();
 const admin = { username: "admin", password: "12345" };
@@ -12,6 +13,15 @@ const admin = { username: "admin", password: "12345" };
 //   }
 // };
 const Desktop2 = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const handleClick = () => {
+    if (username === admin.username && password === admin.password) {
+      navigate("/chat-panel");
+    } else {
+    }
+  };
   return (
     <div className="desktop-2">
       <div className="desktop-2-child" />
@@ -30,8 +40,9 @@ const Desktop2 = () => {
         <form>
           <input
             type="text"
-            placeholder="Username or Email"
+            placeholder="Username"
             className="username-or-email "
+            onChange={(e) => setUsername(e.target.value)}
           />
 
           <input
@@ -39,8 +50,9 @@ const Desktop2 = () => {
             name="password"
             placeholder="Password"
             type="password"
+            onChange={(e) => setPassword(e.target.value)}
           />
-          <button className="frame-child6" />
+          <button className="frame-child6" onClick={handleClick} />
         </form>
 
         <img className="group-icon2" alt="" src="/group.svg" />
