@@ -1,7 +1,30 @@
 import { Link } from "react-router-dom";
 import "./Signup.css";
+import { useState } from "react";
 
 const Desktop3 = () => {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   try {
+  //     const res = await fetch("/auth/signup", {
+  //       method: "POST",
+  //       body: JSON.stringify({ username, email, password }),
+  //       headers: { "Content-Type": "application/json" },
+  //     });
+  //     const data = await res.json();
+  //     console.log(data);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(username, email, password);
+  };
+
   return (
     <div className="desktop-3">
       <div className="desktop-3-item" />
@@ -27,20 +50,23 @@ const Desktop3 = () => {
             placeholder="Username"
             type="text"
             name="username"
+            onChange={(e) => setUsername(e.target.value)}
           />
           <input
             className="email"
             placeholder="Email"
             type="email"
             name="email"
+            onChange={(e) => setEmail(e.target.value)}
           />
           <input
             className="password"
             placeholder="Password"
             type="password"
             name="password"
+            onChange={(e) => setPassword(e.target.value)}
           />
-          <button className="rectangle-button" />
+          <button className="rectangle-button" onClick={handleSubmit} />
         </form>
         <img className="group-icon" alt="" src="/group.svg" />
         <img className="vector-icon1" alt="" src="/vector1.svg" />
