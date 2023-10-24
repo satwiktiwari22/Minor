@@ -44,3 +44,8 @@ body {
   --br-xs: 12px;
   --br-11xs: 2px;
 }
+
+.someIcons {
+  width: 30px;
+  height: 30px;
+}

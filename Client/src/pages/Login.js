@@ -16,7 +16,8 @@ const Desktop2 = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const handleClick = () => {
+  const handleClick = (e) => {
+    e.preventDefault();
     if (username === admin.username && password === admin.password) {
       navigate("/chat-panel");
     } else {
