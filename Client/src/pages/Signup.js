@@ -1,28 +1,45 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import "./Signup.css";
 import { useState } from "react";
-
+import Snackbar from "@mui/material/Snackbar";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import Alert from "@mui/material/Alert";
 const Desktop3 = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-  //   try {
-  //     const res = await fetch("/auth/signup", {
-  //       method: "POST",
-  //       body: JSON.stringify({ username, email, password }),
-  //       headers: { "Content-Type": "application/json" },
-  //     });
-  //     const data = await res.json();
-  //     console.log(data);
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
-  const handleSubmit = (e) => {
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(username, email, password);
+    const response = await fetch("http://localhost:5000/api/users", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: username,
+        email: email,
+        password: password,
+      }),
+    });
+    const res = await response.json();
+    if (response.ok) {
+      navigate("/chat-panel");
+      console.log(res);
+      localStorage.setItem("user", JSON.stringify(res));
+    } else {
+      setOpen(true);
+    }
   };
 
   return (
@@ -67,6 +84,15 @@ const Desktop3 = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
           <button className="rectangle-button" onClick={handleSubmit} />
+          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            <Alert
+              onClose={handleClose}
+              severity="error"
+              sx={{ width: "100%" }}
+            >
+              Please fill all the fields
+            </Alert>
+          </Snackbar>
         </form>
         <img className="group-icon" alt="" src="/group.svg" />
         <img className="vector-icon1" alt="" src="/vector1.svg" />

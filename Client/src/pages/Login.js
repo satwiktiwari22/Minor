@@ -23,6 +23,23 @@ const Desktop2 = () => {
     } else {
     }
   };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const response = await fetch("http://localhost:5000/api/users/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: username,
+        password: password,
+      }),
+    });
+    const res = await response.json();
+    if (response.ok) {
+      navigate("/chat-panel");
+      console.log(res);
+      localStorage.setItem("user", JSON.stringify(res));
+    }
+  };
   return (
     <div className="desktop-2">
       <div className="desktop-2-child" />
@@ -53,7 +70,7 @@ const Desktop2 = () => {
             type="password"
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button className="frame-child6" onClick={handleClick} />
+          <button className="frame-child6" onClick={handleSubmit} />
         </form>
 
         <img className="group-icon2" alt="" src="/group.svg" />
