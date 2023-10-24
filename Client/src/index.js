@@ -9,7 +9,7 @@ const root = createRoot(container);
 import "./index.css";
 root.render(
   <BrowserRouter>
-      <App />
+    <App />
   </BrowserRouter>
 );
 
