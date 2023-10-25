@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import userRoutes from "./Routes/userRoutes.js";
 import chatRoutes from "./Routes/chatRoutes.js";
+import messageRoutes from "./Routes/messageRoutes.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import cors from "cors";
 
@@ -14,6 +15,7 @@ connectDB();
 app.use(express.json());
 app.use("/api/users", userRoutes);
 app.use("/api/chat", chatRoutes);
+app.use("/api/message", messageRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
