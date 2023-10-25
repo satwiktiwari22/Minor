@@ -1,9 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 // const navigate = useNavigate();
-const admin = { username: "admin", password: "12345" };
 // const handleClick = () => {
 //   const username = document.querySelector(".username-or-email").value;
 //   const password = document.querySelector(".password1").value;
@@ -16,13 +17,17 @@ const Desktop2 = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const handleClick = (e) => {
-    e.preventDefault();
-    if (username === admin.username && password === admin.password) {
+  const [open, setOpen] = useState(false);
+  const handleClose = () => setOpen(false);
+
+  useEffect(() => {
+    const userInfo = localStorage.getItem("user");
+    if (userInfo) {
       navigate("/chat-panel");
     } else {
+      navigate("/desktop-2");
     }
-  };
+  }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await fetch("http://localhost:5000/api/users/login", {
@@ -38,6 +43,8 @@ const Desktop2 = () => {
       navigate("/chat-panel");
       console.log(res);
       localStorage.setItem("user", JSON.stringify(res));
+    } else {
+      setOpen(true);
     }
   };
   return (
@@ -71,6 +78,15 @@ const Desktop2 = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
           <button className="frame-child6" onClick={handleSubmit} />
+          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            <Alert
+              onClose={handleClose}
+              severity="error"
+              sx={{ width: "100%" }}
+            >
+              Incorrect username or password
+            </Alert>
+          </Snackbar>
         </form>
 
         <img className="group-icon2" alt="" src="/group.svg" />
