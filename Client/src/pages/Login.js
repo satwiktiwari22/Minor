@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // const navigate = useNavigate();
 const admin = { username: "admin", password: "12345" };
@@ -16,13 +16,15 @@ const Desktop2 = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const handleClick = (e) => {
-    e.preventDefault();
-    if (username === admin.username && password === admin.password) {
+
+  useEffect(() => {
+    const userInfo = localStorage.getItem("user");
+    if (userInfo) {
       navigate("/chat-panel");
     } else {
+      navigate("/desktop-2");
     }
-  };
+  }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await fetch("http://localhost:5000/api/users/login", {
