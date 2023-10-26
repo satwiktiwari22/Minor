@@ -26,6 +26,7 @@ import {
   EmojiEmotions,
   Send,
 } from "@mui/icons-material";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -48,13 +49,16 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-
+import { getSender } from "../config/ChatLogics";
 import { ChatState } from "../Context/Chatprovider";
+import { set } from "mongoose";
+import GroupChatModal from "../components/GroupChatModal";
 
 const drawerWidth = 240;
 
 export default function Chatpanel() {
-  const { user } = ChatState();
+  const [loggedUser, setLoggedUser] = useState();
+  const { user, selectedChat, setSelectedChat, chats, setChats } = ChatState();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorE2, setAnchorE2] = React.useState(null);
   const [anchorE3, setAnchorE3] = React.useState(null);
@@ -73,6 +77,7 @@ export default function Chatpanel() {
   const handleClose2 = () => {
     setAnchorE2(null);
   };
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const handleSearch = async () => {
@@ -99,21 +104,23 @@ export default function Chatpanel() {
     }
   };
 
-  const accessChat = async (id) => {
+  const accessChat = async (userId) => {
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/users/access/${id}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
-      );
+      const response = await fetch("http://localhost:5000/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({ userId }),
+      });
       const res = await response.json();
       if (response.ok) {
+        if (!chats.find((chat) => chat._id === res._id)) {
+          setChats([res, ...chats]);
+        }
         console.log(res);
+        setSelectedChat(res);
       } else {
         console.log("error");
       }
@@ -122,8 +129,31 @@ export default function Chatpanel() {
     }
   };
 
-  const users = [];
-  const groups = [];
+  const fetchChats = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/chat", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      const res = await response.json();
+      if (response.ok) {
+        console.log(res);
+        setChats(res);
+      } else {
+        console.log("error");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    setLoggedUser(JSON.parse(localStorage.getItem("user")));
+    fetchChats();
+  }, []);
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -199,23 +229,8 @@ export default function Chatpanel() {
                     case 2:
                       return (
                         <div>
-                          <Button
-                            id="basic-button"
-                            aria-controls={open ? "basic-menu" : undefined}
-                            aria-haspopup="true"
-                            aria-expanded={open ? "true" : undefined}
-                            onClick={handleClick}
-                            sx={{ left: "0px" }}
-                          >
-                            <AddIcon
-                              sx={{
-                                color: "#E5D6F4",
-                                width: "30px",
-                                height: "30px",
-                              }}
-                            />
-                          </Button>
-                          <Menu
+                          <GroupChatModal />
+                          {/* <Menu
                             id="basic-menu"
                             anchorEl={anchorEl}
                             open={open}
@@ -227,7 +242,7 @@ export default function Chatpanel() {
                             <MenuItem onClick={null}>Add User</MenuItem>
                             <MenuItem onClick={null}>Add Group</MenuItem>
                             <MenuItem onClick={null}>Create Group</MenuItem>
-                          </Menu>
+                          </Menu> */}
                         </div>
                       );
                     case 3:
@@ -277,6 +292,10 @@ export default function Chatpanel() {
         </List>
         <IconButton
           sx={{ padding: "10px", marginBottom: "5px", marginTop: "auto" }}
+          onClick={() => {
+            localStorage.removeItem("user");
+            navigate("/desktop-2");
+          }}
         >
           <AccountCircleIcon
             sx={{
@@ -303,7 +322,7 @@ export default function Chatpanel() {
         variant="permanent"
         anchor="left"
       >
-        <Toolbar>
+        <Toolbar sx={{ py: 2.15 }}>
           <Paper
             component="form"
             sx={{
@@ -366,19 +385,31 @@ export default function Chatpanel() {
           </Dialog>
         </Toolbar>
         <Divider color="#EDE4F5" />
-        <List>
-          {users.map((name) => (
-            <ListItem key={name} disablePadding>
-              <ListItemButton>
-                <Avatar />
-                <ListItemText primary={name} sx={{ margin: "0 20px" }} />
-              </ListItemButton>
+        <List sx={{ px: 2 }}>
+          {chats.map((chat) => (
+            <ListItem
+              key={chat._id}
+              sx={{
+                backgroundColor:
+                  chat._id === selectedChat._id ? "#280948" : "#751CCA",
+                borderRadius: "10px",
+                margin: "5px 0",
+                padding: "5px 10px",
+              }}
+              onClick={() => {
+                setSelectedChat(chat);
+              }}
+            >
+              {!chat.isGroupChat
+                ? getSender(loggedUser, chat.users)
+                : chat.chatName}
+              <ListItemText />
             </ListItem>
           ))}
         </List>
         <Divider color="#EDE4F5" />
         <List>
-          {groups.map((text, index) => (
+          {[].map((text, index) => (
             <ListItem key={index} disablePadding>
               <ListItemButton>
                 <ListItemIcon sx={{ color: "#E5D6F4" }}>
@@ -394,7 +425,7 @@ export default function Chatpanel() {
         component="main"
         sx={{ flexGrow: 1, bgcolor: "background.default", p: 0 }}
       >
-        <Toolbar />
+        {/* <Toolbar /> */}
         <Box
           sx={{
             display: "flex",
