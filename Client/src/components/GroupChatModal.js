@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import AddIcon from "@mui/icons-material/Add";
 import { ChatState } from "../Context/Chatprovider";
+import UserBadgeItem from "./UserBadgeItem";
 
 const GroupChatModal = () => {
   const [open, setOpen] = useState(false);
@@ -16,6 +17,12 @@ const GroupChatModal = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const { user, chats, setChats } = ChatState();
+  const handleDelete = (userToDelete) => {
+    setGroupChatMembers(
+      groupChatMembers.filter((member) => member !== userToDelete)
+    );
+  };
+
   const handleSearch = async (query) => {
     setSearchQuery(query);
     if (query) {
@@ -40,6 +47,43 @@ const GroupChatModal = () => {
       }
     }
   };
+
+  const handleGroup = (userToAdd) => {
+    if (groupChatMembers.includes(userToAdd)) {
+      setGroupChatMembers(
+        groupChatMembers.filter((member) => member !== userToAdd)
+      );
+    } else {
+      setGroupChatMembers([...groupChatMembers, userToAdd]);
+      console.log(groupChatMembers);
+    }
+  };
+
+  const handleCreate = async (e) => {
+    e.preventDefault();
+    const newChat = {
+      name: groupChatName,
+      users: [...groupChatMembers, user._id],
+    };
+    try {
+      const response = await fetch("http://localhost:5000/api/chat/group", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify(newChat),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setChats([...chats, data]);
+        handleClose();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   //   const handleCreate = (e) => {
   //     e.preventDefault();
   //     const newChat = {
@@ -106,6 +150,7 @@ const GroupChatModal = () => {
                 marginTop: "10px",
                 fontSize: "18px",
               }}
+              onChange={(e) => setGroupChatName(e.target.value)}
             />
             <input
               type="text"
@@ -128,11 +173,19 @@ const GroupChatModal = () => {
                 marginTop: "20px",
                 marginBottom: "10px",
               }}
-              //   onClick={handleCreate}
+              onClick={handleCreate}
             >
               Create
             </Button>
           </form>
+          {groupChatMembers.map((member) => (
+            <UserBadgeItem
+              key={member._id}
+              user={member}
+              handleFunction={() => handleDelete(member)}
+            />
+          ))}
+
           {searchResults.slice(0, 4).map((result) => (
             <div
               key={result._id}
@@ -170,6 +223,7 @@ const GroupChatModal = () => {
                   fontWeight: "500",
                   margin: "5px 0px",
                 }}
+                onClick={() => handleGroup(result._id)}
               >
                 Add
               </button>

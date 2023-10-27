@@ -3,6 +3,7 @@ import "./Login.css";
 import { useEffect, useState } from "react";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import { ChatState } from "../Context/Chatprovider";
 
 // const navigate = useNavigate();
 // const handleClick = () => {
@@ -19,15 +20,8 @@ const Desktop2 = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
+  const { user, setUser } = ChatState();
 
-  useEffect(() => {
-    const userInfo = localStorage.getItem("user");
-    if (userInfo) {
-      navigate("/chat-panel");
-    } else {
-      navigate("/desktop-2");
-    }
-  }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await fetch("http://localhost:5000/api/users/login", {
@@ -40,13 +34,23 @@ const Desktop2 = () => {
     });
     const res = await response.json();
     if (response.ok) {
-      navigate("/chat-panel");
-      console.log(res);
       localStorage.setItem("user", JSON.stringify(res));
+      console.log(res);
+      setUser(res);
     } else {
       setOpen(true);
     }
   };
+  useEffect(() => {
+    const userInfo = localStorage.getItem("user");
+    if (userInfo) {
+      console.log(userInfo);
+      // setUser(userInfo);
+      navigate("/chat-panel");
+    } else {
+      navigate("/desktop-2");
+    }
+  }, [user]);
   return (
     <div className="desktop-2">
       <div className="desktop-2-child" />

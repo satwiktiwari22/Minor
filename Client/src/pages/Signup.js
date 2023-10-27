@@ -36,6 +36,7 @@ const Desktop3 = () => {
     if (response.ok) {
       navigate("/chat-panel");
       console.log(res);
+      setUser(res);
       localStorage.setItem("user", JSON.stringify(res));
     } else {
       setOpen(true);

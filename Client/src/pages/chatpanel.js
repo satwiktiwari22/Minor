@@ -104,7 +104,7 @@ export default function Chatpanel() {
     }
   };
 
-  const accessChat = async (userId) => {
+  const accessChat = async (userId, user) => {
     try {
       const response = await fetch("http://localhost:5000/api/chat", {
         method: "POST",
@@ -130,6 +130,7 @@ export default function Chatpanel() {
   };
 
   const fetchChats = async () => {
+    console.log(user);
     try {
       const response = await fetch("http://localhost:5000/api/chat", {
         method: "GET",
@@ -151,8 +152,9 @@ export default function Chatpanel() {
   };
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem("user")));
+    console.log("Chats Fetched!!!");
     fetchChats();
-  }, []);
+  }, [navigate]);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -326,7 +328,7 @@ export default function Chatpanel() {
           <Paper
             component="form"
             sx={{
-              p: "0.5px 4px",
+              p: "0.5px 2px",
               display: "flex",
               alignItems: "center",
               width: 400,
@@ -366,7 +368,7 @@ export default function Chatpanel() {
                         width: "300px",
                       }}
                       onClick={() => {
-                        accessChat(result._id);
+                        accessChat(result._id, user);
                       }}
                     >
                       <ListItemText
@@ -385,27 +387,28 @@ export default function Chatpanel() {
           </Dialog>
         </Toolbar>
         <Divider color="#EDE4F5" />
-        <List sx={{ px: 2 }}>
-          {chats.map((chat) => (
-            <ListItem
-              key={chat._id}
-              sx={{
-                backgroundColor:
-                  chat._id === selectedChat._id ? "#280948" : "#751CCA",
-                borderRadius: "10px",
-                margin: "5px 0",
-                padding: "5px 10px",
-              }}
-              onClick={() => {
-                setSelectedChat(chat);
-              }}
-            >
-              {!chat.isGroupChat
-                ? getSender(loggedUser, chat.users)
-                : chat.chatName}
-              <ListItemText />
-            </ListItem>
-          ))}
+        <List sx={{ px: 1 }}>
+          {chats &&
+            chats.map((chat) => (
+              <ListItem
+                key={chat._id}
+                sx={{
+                  backgroundColor:
+                    chat === selectedChat ? "#280948" : "#751CCA",
+                  borderRadius: "6px",
+                  margin: "5px 0",
+                  padding: "8px 10px",
+                }}
+                onClick={() => {
+                  setSelectedChat(chat);
+                }}
+              >
+                {!chat.isGroupChat
+                  ? getSender(loggedUser, chat.users)
+                  : chat.chatName}
+                <ListItemText />
+              </ListItem>
+            ))}
         </List>
         <Divider color="#EDE4F5" />
         <List>
