@@ -9,7 +9,6 @@ import { ChatState } from "../Context/Chatprovider";
 import CloseIcon from "@mui/icons-material/Close";
 import UserBadgeItem from "./UserBadgeItem";
 import axios from "axios";
-import { set } from "mongoose";
 
 const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
   const [open, setOpen] = useState(false);
@@ -96,7 +95,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
       console.log(error);
     }
   };
-  const handleUpdateGroupChat = async (e) => {};
+
   const handleRename = async (e) => {
     if (!groupChatName) return;
     try {
