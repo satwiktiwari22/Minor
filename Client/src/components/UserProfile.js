@@ -7,29 +7,34 @@ import Modal from "@mui/material/Modal";
 import AddIcon from "@mui/icons-material/Add";
 
 import Avatar from "@mui/material/Avatar";
+import IconButton from "@mui/material/IconButton";
 
-const UserProfile = ({ user }) => {
+const UserProfile = ({ user, selectedChat }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   return (
     <>
-      <Button onClick={handleOpen}>
-        {user && (
-          <Avatar
-            alt={user.name}
-            sx={{
-              margin: "10px 15px",
-              marginTop: 2,
-              width: 34,
-              height: 34,
-              color: "#751CCE",
-              backgroundColor: "#E5D6F4",
-            }}
-          />
-        )}
-      </Button>
+      {user && (
+        <Avatar
+          onClick={handleOpen}
+          sx={{
+            margin: "10px 15px",
+            marginTop: 2,
+            width: 34,
+            height: 34,
+            color: "#751CCE",
+            backgroundColor: "#E5D6F4",
+          }}
+        >
+          {selectedChat
+            ? selectedChat.isGroupChat
+              ? selectedChat.chatName[0]
+              : selectedChat.users[1].name[0]
+            : "CA"}
+        </Avatar>
+      )}
       <Modal
         open={open}
         onClose={handleClose}
@@ -49,7 +54,22 @@ const UserProfile = ({ user }) => {
             boxShadow: 12,
             p: 4,
           }}
-        ></Box>
+        >
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            {selectedChat
+              ? selectedChat.isGroupChat
+                ? selectedChat.chatName
+                : selectedChat.users[1].name
+              : "Chat App"}
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            {selectedChat
+              ? selectedChat.isGroupChat
+                ? "Group Chat"
+                : selectedChat.users[1].email
+              : "Welcome to Chat App"}
+          </Typography>
+        </Box>
       </Modal>
     </>
   );

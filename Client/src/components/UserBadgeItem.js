@@ -5,23 +5,29 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import Close from "@mui/icons-material/Close";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import IconButton from "@mui/material/IconButton";
 
 const UserBadgeItem = ({ user, handleFunction }) => {
   return (
-    <>
+    <span
+      style={{
+        display: "inline-block",
+        margin: "1px",
+      }}
+    >
       <Box
         sx={{
-          px: 2,
-          py: 1,
+          padding: "2px 4px",
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between",
-          borderRadius: "10px",
+          justifyContent: "center",
+          borderRadius: "20px",
           backgroundColor: "#751CCE",
           color: "white",
-          width: "100%",
-          m: 1,
-          mb: 2,
+          width: "fit-content",
+          m: 0.5,
+          mb: 1,
           fontSize: "12px",
         }}
       >
@@ -30,26 +36,31 @@ const UserBadgeItem = ({ user, handleFunction }) => {
             fontSize: "14px",
             fontWeight: "500",
             color: "#E5D6F4",
-            margin: "0px 10px",
+            margin: "0px 5px",
+            display: "inline",
+            marginLeft: "10px",
           }}
         >
           {user.name}
         </Typography>
-        <Button
+        <IconButton
           sx={{
-            backgroundColor: "#E5D6F4",
-            color: "#751CCE",
-            width: "100%",
-            height: "40px",
-            marginTop: "20px",
-            marginBottom: "10px",
+            color: "#E5D6F4",
+
+            margin: 0,
+            padding: 1,
           }}
           onClick={handleFunction}
         >
-          <Close />
-        </Button>
+          <CloseOutlinedIcon
+            sx={{
+              width: "16px",
+              height: "16px",
+            }}
+          />
+        </IconButton>
       </Box>
-    </>
+    </span>
   );
 };
 
