@@ -25,6 +25,7 @@ import {
   Call,
   EmojiEmotions,
   Send,
+  Update,
 } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -53,6 +54,9 @@ import { getSender } from "../config/ChatLogics";
 import { ChatState } from "../Context/Chatprovider";
 import { set } from "mongoose";
 import GroupChatModal from "../components/GroupChatModal";
+import UserProfile from "../components/UserProfile";
+import SingleChat from "../components/SingleChat";
+import UpdateGroupChatModal from "../components/UpdateGroupChatModal";
 
 const drawerWidth = 240;
 
@@ -104,7 +108,7 @@ export default function Chatpanel() {
     }
   };
 
-  const accessChat = async (userId) => {
+  const accessChat = async (userId, user) => {
     try {
       const response = await fetch("http://localhost:5000/api/chat", {
         method: "POST",
@@ -129,7 +133,9 @@ export default function Chatpanel() {
     }
   };
 
+  const [fetchAgain, setFetchAgain] = useState(false);
   const fetchChats = async () => {
+    console.log(user);
     try {
       const response = await fetch("http://localhost:5000/api/chat", {
         method: "GET",
@@ -151,11 +157,12 @@ export default function Chatpanel() {
   };
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem("user")));
+    console.log("Chats Fetched!!!");
     fetchChats();
-  }, []);
+  }, [navigate, user, fetchAgain]);
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", bgcolor: "#EDE4F5" }}>
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -166,16 +173,23 @@ export default function Chatpanel() {
         }}
       >
         <Toolbar>
-          <Avatar />
+          <UserProfile user={user} selectedChat={selectedChat} />
           <Typography variant="h6" noWrap component="div" padding={"0px 20px"}>
-            user
+            {selectedChat
+              ? selectedChat.isGroupChat
+                ? selectedChat.chatName
+                : selectedChat.users[1].name
+              : "Chat App"}
           </Typography>
-          <IconButton sx={{ marginLeft: "auto", padding: "10px" }}>
-            <CallIcon />
-          </IconButton>
-          <IconButton sx={{ padding: "10px", margin: 2 }}>
-            <VideocamIcon />
-          </IconButton>
+
+          {selectedChat && selectedChat.isGroupChat && (
+            <IconButton sx={{ marginLeft: "auto", padding: "10px" }}>
+              <UpdateGroupChatModal
+                fetchAgain={fetchAgain}
+                setFetchAgain={setFetchAgain}
+              />
+            </IconButton>
+          )}
         </Toolbar>
       </AppBar>
       <Drawer
@@ -230,19 +244,6 @@ export default function Chatpanel() {
                       return (
                         <div>
                           <GroupChatModal />
-                          {/* <Menu
-                            id="basic-menu"
-                            anchorEl={anchorEl}
-                            open={open}
-                            onClose={handleClose}
-                            MenuListProps={{
-                              "aria-labelledby": "basic-button",
-                            }}
-                          >
-                            <MenuItem onClick={null}>Add User</MenuItem>
-                            <MenuItem onClick={null}>Add Group</MenuItem>
-                            <MenuItem onClick={null}>Create Group</MenuItem>
-                          </Menu> */}
                         </div>
                       );
                     case 3:
@@ -326,7 +327,7 @@ export default function Chatpanel() {
           <Paper
             component="form"
             sx={{
-              p: "0.5px 4px",
+              p: "0.5px 2px",
               display: "flex",
               alignItems: "center",
               width: 400,
@@ -366,7 +367,7 @@ export default function Chatpanel() {
                         width: "300px",
                       }}
                       onClick={() => {
-                        accessChat(result._id);
+                        accessChat(result._id, user);
                       }}
                     >
                       <ListItemText
@@ -385,27 +386,28 @@ export default function Chatpanel() {
           </Dialog>
         </Toolbar>
         <Divider color="#EDE4F5" />
-        <List sx={{ px: 2 }}>
-          {chats.map((chat) => (
-            <ListItem
-              key={chat._id}
-              sx={{
-                backgroundColor:
-                  chat._id === selectedChat._id ? "#280948" : "#751CCA",
-                borderRadius: "10px",
-                margin: "5px 0",
-                padding: "5px 10px",
-              }}
-              onClick={() => {
-                setSelectedChat(chat);
-              }}
-            >
-              {!chat.isGroupChat
-                ? getSender(loggedUser, chat.users)
-                : chat.chatName}
-              <ListItemText />
-            </ListItem>
-          ))}
+        <List sx={{ px: 1 }}>
+          {chats &&
+            chats.map((chat) => (
+              <ListItem
+                key={chat._id}
+                sx={{
+                  backgroundColor:
+                    chat === selectedChat ? "#280948" : "#751CCA",
+                  borderRadius: "6px",
+                  margin: "5px 0",
+                  padding: "8px 10px",
+                }}
+                onClick={() => {
+                  setSelectedChat(chat);
+                }}
+              >
+                {!chat.isGroupChat
+                  ? getSender(loggedUser, chat.users)
+                  : chat.chatName}
+                <ListItemText />
+              </ListItem>
+            ))}
         </List>
         <Divider color="#EDE4F5" />
         <List>
@@ -421,10 +423,7 @@ export default function Chatpanel() {
           ))}
         </List>
       </Drawer>
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, bgcolor: "background.default", p: 0 }}
-      >
+      <Box component="main" sx={{ flexGrow: 1, bgcolor: "#EDE4F5", p: 0 }}>
         {/* <Toolbar /> */}
         <Box
           sx={{
@@ -439,39 +438,7 @@ export default function Chatpanel() {
             margin: 0,
           }}
         >
-          <Toolbar
-            sx={{
-              position: "fixed",
-              bottom: 2,
-            }}
-          >
-            <InsertEmoticonIcon
-              sx={{ color: "#751CCE", fontSize: "30px", margin: "0 5px" }}
-            />
-            <AttachFileIcon
-              sx={{ color: "#751CCE", fontSize: "30px", margin: "0 5px" }}
-            />
-            <Paper
-              component="form"
-              sx={{
-                p: "0.5px 4px",
-                display: "flex",
-                alignItems: "center",
-                width: "900px",
-                height: 45,
-                borderRadius: "20px",
-              }}
-            >
-              <InputBase
-                sx={{ ml: 1, flex: 1, marginLeft: "20px" }}
-                placeholder="Type a message"
-                inputProps={{ "aria-label": "Type a message" }}
-              />
-            </Paper>
-            <SendIcon
-              sx={{ color: "#751CCE", fontSize: "30px", margin: "0 5px" }}
-            />
-          </Toolbar>
+          <SingleChat selectedChat={selectedChat} />
         </Box>
       </Box>
     </Box>
