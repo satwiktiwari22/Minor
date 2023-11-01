@@ -179,7 +179,7 @@ export default function Chatpanel() {
             {selectedChat
               ? selectedChat.isGroupChat
                 ? selectedChat.chatName
-                : selectedChat.users[1].name
+                : getSender(loggedUser, selectedChat.users)
               : "Chat App"}
           </Typography>
 
