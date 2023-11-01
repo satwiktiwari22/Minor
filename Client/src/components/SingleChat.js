@@ -13,12 +13,23 @@ import { Icon } from "@mui/material";
 import axios from "axios";
 import "./styles.css";
 import ScrollableChat from "./ScrollableChat";
+import io from "socket.io-client";
+import Lottie, { LottiePlayer } from "lottie-react";
+import * as typingAnimation from "../animations/typer.json";
+import useMediaQuery from "@mui/material/useMediaQuery";
+
+const ENDPOINT = "http://localhost:5000";
+var socket, selectedChatCompare;
 
 const SingleChat = ({ selectedChat }) => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState("");
   const { user, setSelectedChat } = ChatState();
+  const [socketConnected, setSocketConnected] = useState(false);
+  const [typing, setTyping] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
+  const matches = useMediaQuery("(max-width:1000px)");
 
   const fetchMessages = async () => {
     if (!selectedChat) return;
@@ -36,17 +47,48 @@ const SingleChat = ({ selectedChat }) => {
       );
       setMessages(data);
       setLoading(false);
+      socket.emit("join chat", selectedChat._id);
       console.log(messages);
     } catch (error) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit("setup", user);
+    socket.on("connected", () => {
+      setSocketConnected(true);
+    });
+    socket.on("typing", () => {
+      setIsTyping(true);
+    });
+    socket.on("stop typing", () => {
+      setIsTyping(false);
+    });
+  }, []);
+
   useEffect(() => {
     fetchMessages();
+    selectedChatCompare = selectedChat;
   }, [selectedChat]);
+
+  useEffect(() => {
+    socket.on("message recieved", (newMessageRecieved) => {
+      if (
+        !selectedChatCompare ||
+        selectedChatCompare._id !== newMessageRecieved.chat._id
+      ) {
+        //show notification
+      } else {
+        setMessages([...messages, newMessageRecieved]);
+      }
+    });
+  });
 
   const sendMessage = async (e) => {
     e.preventDefault();
+    socket.emit("stop typing", selectedChat._id);
     if (newMessage) {
       try {
         const config = {
@@ -62,6 +104,7 @@ const SingleChat = ({ selectedChat }) => {
           config
         );
         console.log(data);
+        socket.emit("new message", data);
 
         setMessages([...messages, data]);
       } catch (error) {
@@ -72,6 +115,21 @@ const SingleChat = ({ selectedChat }) => {
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
     //typing indicator logic
+    if (!socketConnected) return;
+    if (!typing) {
+      setTyping(true);
+      socket.emit("typing", selectedChat._id);
+    }
+    let lastTypedTime = new Date().getTime();
+    var timerLength = 3000;
+    setTimeout(() => {
+      let timeNow = new Date().getTime();
+      let timeDiff = timeNow - lastTypedTime;
+      if (timeDiff >= timerLength && typing) {
+        socket.emit("stop typing", selectedChat._id);
+        setTyping(false);
+      }
+    }, timerLength);
   };
 
   return (
@@ -79,7 +137,7 @@ const SingleChat = ({ selectedChat }) => {
       {selectedChat ? (
         <Box
           sx={{
-            width: `calc(100% - 450px)`,
+            width: matches ? `calc(100% - 150px)` : `calc(100% - 450px)`,
             height: `calc(100% - 170px)`,
             position: "absolute",
             top: "80px",
@@ -105,11 +163,24 @@ const SingleChat = ({ selectedChat }) => {
               <ScrollableChat messages={messages} />
             </div>
           )}
+          {isTyping ? (
+            <Lottie
+              animationData={typingAnimation}
+              style={{
+                width: "60px",
+                height: "60px",
+                marginTop: "5px",
+                marginLeft: "30px",
+              }}
+            />
+          ) : (
+            <></>
+          )}
           <Toolbar
             sx={{
               position: "fixed",
               bottom: 2,
-              left: "25%",
+              left: matches ? "15%" : "25%",
               bgcolor: "#EDE4F5",
             }}
           >
@@ -118,19 +189,20 @@ const SingleChat = ({ selectedChat }) => {
                 sx={{ color: "#751CCE", fontSize: "30px", margin: "0 5px" }}
               />
             </IconButton>
+
             <Paper
               component="form"
               sx={{
                 p: "0.5px 4px",
                 display: "flex",
                 alignItems: "center",
-                width: "900px",
+                width: "fit-content",
                 height: 45,
                 borderRadius: "20px",
               }}
             >
               <InputBase
-                sx={{ ml: 1, flex: 1, marginLeft: "20px" }}
+                sx={{ ml: 1, flex: 1, marginLeft: "20px", width: "55vw" }}
                 placeholder="Type a message"
                 inputProps={{ "aria-label": "Type a message" }}
                 onChange={typingHandler}

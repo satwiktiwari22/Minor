@@ -12,11 +12,11 @@ import {
 import { ChatState } from "../Context/Chatprovider";
 import Tooltip from "@mui/material/Tooltip";
 import Avatar from "@mui/material/Avatar";
-
+import "./scroll.css";
 const ScrollableChat = ({ messages }) => {
   const { user } = ChatState();
   return (
-    <ScrollableFeed>
+    <ScrollableFeed className="scroll">
       {messages &&
         messages.map((m, i) => (
           <div

@@ -38,6 +38,10 @@ function App() {
         title = "Login Page";
         metaDescription = "";
         break;
+      case "/chat-panel":
+        title = "Chat Panel";
+        metaDescription = "";
+        break;
     }
 
     if (title) {
