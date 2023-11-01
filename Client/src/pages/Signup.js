@@ -6,6 +6,7 @@ import Snackbar from "@mui/material/Snackbar";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Alert from "@mui/material/Alert";
+import { ChatState } from "../Context/Chatprovider";
 const Desktop3 = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -13,6 +14,7 @@ const Desktop3 = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const { setUser } = ChatState();
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -34,8 +36,9 @@ const Desktop3 = () => {
     });
     const res = await response.json();
     if (response.ok) {
-      navigate("/chat-panel");
+      navigate("/desktop-2");
       console.log(res);
+      setUser(res);
       localStorage.setItem("user", JSON.stringify(res));
     } else {
       setOpen(true);

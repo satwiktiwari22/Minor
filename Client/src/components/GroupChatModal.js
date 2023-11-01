@@ -6,6 +6,8 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import AddIcon from "@mui/icons-material/Add";
 import { ChatState } from "../Context/Chatprovider";
+import UserBadgeItem from "./UserBadgeItem";
+import axios from "axios";
 
 const GroupChatModal = () => {
   const [open, setOpen] = useState(false);
@@ -16,6 +18,12 @@ const GroupChatModal = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const { user, chats, setChats } = ChatState();
+  const handleDelete = (userToDelete) => {
+    setGroupChatMembers(
+      groupChatMembers.filter((member) => member !== userToDelete)
+    );
+  };
+
   const handleSearch = async (query) => {
     setSearchQuery(query);
     if (query) {
@@ -40,6 +48,67 @@ const GroupChatModal = () => {
       }
     }
   };
+
+  const handleGroup = (userToAdd) => {
+    if (groupChatMembers.includes(userToAdd)) {
+      console.log("already in group");
+      return;
+    } else {
+      console.log("adding to group");
+      setGroupChatMembers([...groupChatMembers, userToAdd]);
+    }
+  };
+
+  // const handleCreate = async (e) => {
+  //   e.preventDefault();
+  //   console.log(groupChatMembers);
+
+  //   try {
+  //     const response = await fetch("http://localhost:5000/api/chat/group", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${user.token}`,
+  //       },
+  //       body: {
+  //         name: groupChatName,
+  //         users: JSON.stringify(groupChatMembers.map((member) => member._id)),
+  //       },
+  //     });
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       setChats([...chats, data]);
+  //       handleClose();
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+  const handleCreate = async () => {
+    if (!groupChatName || !groupChatMembers) {
+      return;
+    }
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      const { data } = await axios.post(
+        `/api/chat/group`,
+        {
+          name: groupChatName,
+          users: JSON.stringify(groupChatMembers.map((u) => u._id)),
+        },
+        config
+      );
+      setChats([data, ...chats]);
+      handleClose();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   //   const handleCreate = (e) => {
   //     e.preventDefault();
   //     const newChat = {
@@ -106,6 +175,7 @@ const GroupChatModal = () => {
                 marginTop: "10px",
                 fontSize: "18px",
               }}
+              onChange={(e) => setGroupChatName(e.target.value)}
             />
             <input
               type="text"
@@ -128,11 +198,20 @@ const GroupChatModal = () => {
                 marginTop: "20px",
                 marginBottom: "10px",
               }}
-              //   onClick={handleCreate}
+              onClick={handleCreate}
             >
               Create
             </Button>
           </form>
+          {groupChatMembers &&
+            groupChatMembers.map((member) => (
+              <UserBadgeItem
+                key={member._id}
+                user={member}
+                handleFunction={() => handleDelete(member)}
+              />
+            ))}
+
           {searchResults.slice(0, 4).map((result) => (
             <div
               key={result._id}
@@ -170,6 +249,7 @@ const GroupChatModal = () => {
                   fontWeight: "500",
                   margin: "5px 0px",
                 }}
+                onClick={() => handleGroup(result)}
               >
                 Add
               </button>
