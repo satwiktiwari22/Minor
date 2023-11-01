@@ -222,7 +222,20 @@ const SingleChat = ({ selectedChat }) => {
           </Toolbar>
         </Box>
       ) : (
-        <Box>
+        <Box
+          sx={{
+            width: matches ? `calc(100% - 150px)` : `calc(100% - 450px)`,
+            height: `calc(100% - 170px)`,
+            position: "absolute",
+            top: "80px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "#EDE4F5",
+            padding: "0 30px",
+          }}
+        >
           <h1>Chat App</h1>
           <p>Click on a chat to start messaging</p>
         </Box>

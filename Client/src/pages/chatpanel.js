@@ -19,14 +19,7 @@ import AddIcon from "@mui/icons-material/Add";
 import SettingsIcon from "@mui/icons-material/Settings";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import IconButton from "@mui/material/IconButton";
-import {
-  AttachFile,
-  Block,
-  Call,
-  EmojiEmotions,
-  Send,
-  Update,
-} from "@mui/icons-material";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Menu from "@mui/material/Menu";
@@ -58,6 +51,7 @@ import UserProfile from "../components/UserProfile";
 import SingleChat from "../components/SingleChat";
 import UpdateGroupChatModal from "../components/UpdateGroupChatModal";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 export default function Chatpanel() {
   const [loggedUser, setLoggedUser] = useState();
@@ -212,85 +206,102 @@ export default function Chatpanel() {
         {/* <Toolbar /> */}
 
         <List>
-          {["Avatar", "Home", "Add", "More"].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton sx={{ padding: 0 }}>
-                {(() => {
-                  switch (index) {
-                    case 0:
-                      return (
-                        <Avatar
-                          sx={{
-                            margin: "10px 15px",
-                            marginTop: 2,
-                            width: 34,
-                            height: 34,
-                            color: "#751CCE",
-                            backgroundColor: "#E5D6F4",
-                          }}
-                        />
-                      );
-                    case 1:
-                      return (
-                        <HomeIcon
-                          sx={{
-                            margin: "10px 15px",
-                            color: "#E5D6F4",
-                            width: "30px",
-                            height: "30px",
-                          }}
-                        />
-                      );
-                    case 2:
-                      return (
-                        <div>
-                          <GroupChatModal />
-                        </div>
-                      );
-                    case 3:
-                      return (
-                        <div>
-                          <Button
-                            id="basic-button2"
-                            aria-controls={open2 ? "basic-menu2" : undefined}
-                            aria-haspopup="true"
-                            aria-expanded={open2 ? "true" : undefined}
-                            onClick={handleClick2}
-                            sx={{ left: "0px" }}
-                          >
-                            <MoreHorizIcon
-                              sx={{
-                                color: "#E5D6F4",
-                                width: "30px",
-                                height: "30px",
-                              }}
-                            />
-                          </Button>
-                          <Menu
-                            id="basic-menu2"
-                            anchorEl={anchorE2}
-                            open={open2}
-                            onClose={handleClose2}
-                            MenuListProps={{
-                              "aria-labelledby": "basic-button2",
+          {["Avatar", "Home", "Add", "More", "Notification"].map(
+            (text, index) => (
+              <ListItem key={text} disablePadding>
+                <ListItemButton sx={{ padding: 0 }}>
+                  {(() => {
+                    switch (index) {
+                      case 0:
+                        return (
+                          <Avatar
+                            sx={{
+                              margin: "10px 15px",
+                              marginTop: 2,
+                              width: 34,
+                              height: 34,
+                              color: "#751CCE",
+                              backgroundColor: "#E5D6F4",
                             }}
-                          >
-                            <MenuItem onClick={null}>
-                              Change Background
-                            </MenuItem>
-                            <MenuItem onClick={null}>Switch Mode</MenuItem>
-                            <MenuItem onClick={null}>Feedback</MenuItem>
-                            <MenuItem onClick={null}>Help</MenuItem>
-                          </Menu>
-                        </div>
-                      );
-                    default:
-                      return null;
-                  }
-                })()}
-              </ListItemButton>
-            </ListItem>
-          ))}
+                          />
+                        );
+                      case 1:
+                        return (
+                          <HomeIcon
+                            sx={{
+                              margin: "10px 15px",
+                              color: "#E5D6F4",
+                              width: "30px",
+                              height: "30px",
+                            }}
+                            onClick={() => {
+                              setSelectedChat(null);
+                            }}
+                          />
+                        );
+                      case 2:
+                        return (
+                          <div>
+                            <GroupChatModal />
+                          </div>
+                        );
+                      case 3:
+                        return (
+                          <div>
+                            <Button
+                              id="basic-button2"
+                              aria-controls={open2 ? "basic-menu2" : undefined}
+                              aria-haspopup="true"
+                              aria-expanded={open2 ? "true" : undefined}
+                              onClick={handleClick2}
+                              sx={{ left: "0px" }}
+                            >
+                              <MoreHorizIcon
+                                sx={{
+                                  color: "#E5D6F4",
+                                  width: "30px",
+                                  height: "30px",
+                                }}
+                              />
+                            </Button>
+                            <Menu
+                              id="basic-menu2"
+                              anchorEl={anchorE2}
+                              open={open2}
+                              onClose={handleClose2}
+                              MenuListProps={{
+                                "aria-labelledby": "basic-button2",
+                              }}
+                            >
+                              <MenuItem onClick={null}>
+                                Change Background
+                              </MenuItem>
+                              <MenuItem onClick={null}>Switch Mode</MenuItem>
+                              <MenuItem onClick={null}>Feedback</MenuItem>
+                              <MenuItem onClick={null}>Help</MenuItem>
+                            </Menu>
+                          </div>
+                        );
+
+                      case 4:
+                        return (
+                          <NotificationsIcon
+                            sx={{
+                              margin: "10px 15px",
+                              color: "#E5D6F4",
+                              width: "30px",
+                              height: "30px",
+                            }}
+                          />
+                        );
+                      default:
+                        return null;
+                    }
+                  })()}
+                </ListItemButton>
+              </ListItem>
+            )
+          )}
         </List>
         <IconButton
           sx={{ padding: "10px", marginBottom: "5px", marginTop: "auto" }}
@@ -299,7 +310,7 @@ export default function Chatpanel() {
             navigate("/desktop-2");
           }}
         >
-          <AccountCircleIcon
+          <LogoutIcon
             sx={{
               color: "#E5D6F4",
               width: "30px",
