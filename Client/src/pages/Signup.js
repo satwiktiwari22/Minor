@@ -34,7 +34,7 @@ const Desktop3 = () => {
     });
     const res = await response.json();
     if (response.ok) {
-      navigate("/chat-panel");
+      navigate("/desktop-2");
       console.log(res);
       setUser(res);
       localStorage.setItem("user", JSON.stringify(res));
