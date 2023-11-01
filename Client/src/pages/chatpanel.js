@@ -53,10 +53,23 @@ import { getSender } from "../config/ChatLogics";
 import { ChatState } from "../Context/Chatprovider";
 import { set } from "mongoose";
 import GroupChatModal from "../components/GroupChatModal";
+// import Picker from "emoji-picker-react";
 
 const drawerWidth = 240;
 
 export default function Chatpanel() {
+  // const [msg, setMsg] = useState("");
+  // const [showEmojiPicker, setEmojiPicker] = useState(false);
+  // const handleEmojiPicker = () => {
+  //   setEmojiPicker(!showEmojiPicker);
+  // };
+  // const handleEmojiClick = (event, emojiobj) => {
+  //   console.log(emojiobj.emoji);
+  //   let message = msg;
+  //   message += emojiobj.emoji;
+  //   setMsg(message);
+  // };
+
   const [loggedUser, setLoggedUser] = useState();
   const { user, selectedChat, setSelectedChat, chats, setChats } = ChatState();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -446,8 +459,10 @@ export default function Chatpanel() {
             }}
           >
             <InsertEmoticonIcon
+              // onClick={handleEmojiPicker}
               sx={{ color: "#751CCE", fontSize: "30px", margin: "0 5px" }}
             />
+            {/* {showEmojiPicker && <Picker onEmojiClick={handleEmojiClick} />} */}
             <AttachFileIcon
               sx={{ color: "#751CCE", fontSize: "30px", margin: "0 5px" }}
             />
@@ -463,9 +478,12 @@ export default function Chatpanel() {
               }}
             >
               <InputBase
+                className="msg-input"
                 sx={{ ml: 1, flex: 1, marginLeft: "20px" }}
                 placeholder="Type a message"
                 inputProps={{ "aria-label": "Type a message" }}
+                value={msg}
+                onChange={(event) => setMsg(event.target.value)}
               />
             </Paper>
             <SendIcon
