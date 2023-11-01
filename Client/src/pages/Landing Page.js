@@ -1,5 +1,6 @@
 // import { useCallback } from "react";
 import { Link } from "react-router-dom";
+import ArrowCircleUpOutlinedIcon from "@mui/icons-material/ArrowCircleUpOutlined";
 import "./Landing Page.css";
 const Desktop1 = () => {
   // const onFrameButton2Click = useCallback(() => {
@@ -28,6 +29,11 @@ const Desktop1 = () => {
 
   return (
     <div className="desktop-1">
+      <ArrowCircleUpOutlinedIcon
+        className="arrow-icon"
+        sx={{ width: "30px", height: "30px" }}
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      />
       <div className="desktop-1-child" />
       <div className="ellipse-div" />
       <div className="app-name">APP_Name</div>
