@@ -52,14 +52,24 @@ import SingleChat from "../components/SingleChat";
 import UpdateGroupChatModal from "../components/UpdateGroupChatModal";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import LogoutIcon from "@mui/icons-material/Logout";
+import Badge from "@mui/material/Badge";
 
 export default function Chatpanel() {
   const [loggedUser, setLoggedUser] = useState();
-  const { user, selectedChat, setSelectedChat, chats, setChats } = ChatState();
+  const {
+    user,
+    selectedChat,
+    setSelectedChat,
+    chats,
+    setChats,
+    notifications,
+    setNotifications,
+  } = ChatState();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorE2, setAnchorE2] = React.useState(null);
   const [anchorE3, setAnchorE3] = React.useState(null);
   const open = Boolean(anchorEl);
+  const openNotf = Boolean(anchorE3);
   const open2 = Boolean(anchorE2);
   const [open3, setOpen3] = React.useState(false);
   const matches = useMediaQuery("(min-width:1000px)");
@@ -285,14 +295,70 @@ export default function Chatpanel() {
 
                       case 4:
                         return (
-                          <NotificationsIcon
-                            sx={{
-                              margin: "10px 15px",
-                              color: "#E5D6F4",
-                              width: "30px",
-                              height: "30px",
-                            }}
-                          />
+                          <div>
+                            <Button
+                              id="basic-button2"
+                              aria-controls={
+                                openNotf ? "basic-menu-notification" : undefined
+                              }
+                              aria-haspopup="true"
+                              aria-expanded={openNotf ? "true" : undefined}
+                              onClick={(e) => {
+                                setAnchorE3(e.currentTarget);
+                              }}
+                              sx={{ left: "0px" }}
+                            >
+                              <Badge
+                                badgeContent={notifications.length}
+                                color="secondary"
+                              >
+                                <NotificationsIcon
+                                  sx={{
+                                    color: "#E5D6F4",
+                                    width: "30px",
+                                    height: "30px",
+                                  }}
+                                />
+                              </Badge>
+                            </Button>
+                            <Menu
+                              id="basic-menu-notification"
+                              anchorEl={anchorE3}
+                              open={openNotf}
+                              onClose={() => setAnchorE3(null)}
+                              MenuListProps={{
+                                "aria-labelledby": "basic-button-notification",
+                              }}
+                            >
+                              {notifications.length === 0 ? (
+                                <MenuItem onClick={null}>
+                                  No new messages
+                                </MenuItem>
+                              ) : (
+                                notifications.map((notification) => (
+                                  <MenuItem
+                                    key={notification._id}
+                                    onClick={() => {
+                                      setSelectedChat(notification.chat);
+                                      setNotifications(
+                                        notifications.filter(
+                                          (n) => n._id !== notification._id
+                                        )
+                                      );
+                                      setAnchorE3(null);
+                                    }}
+                                  >
+                                    {notification.chat.isGroupChat
+                                      ? `New message in ${notification.chat.chatName}`
+                                      : `New Message from ${getSender(
+                                          loggedUser,
+                                          notification.chat.users
+                                        )}`}
+                                  </MenuItem>
+                                ))
+                              )}
+                            </Menu>
+                          </div>
                         );
                       default:
                         return null;
