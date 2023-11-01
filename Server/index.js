@@ -38,8 +38,11 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log("Connected to socket.io");
   socket.on("setup", (userData) => {
-    socket.join(userData._id);
-    socket.emit("connected");
+    if (!userData) return console.log("No user data");
+    else {
+      socket.join(userData._id);
+      socket.emit("connected");
+    }
   });
 
   socket.on("join chat", (room) => {

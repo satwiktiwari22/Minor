@@ -57,8 +57,7 @@ import GroupChatModal from "../components/GroupChatModal";
 import UserProfile from "../components/UserProfile";
 import SingleChat from "../components/SingleChat";
 import UpdateGroupChatModal from "../components/UpdateGroupChatModal";
-
-const drawerWidth = 240;
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 export default function Chatpanel() {
   const [loggedUser, setLoggedUser] = useState();
@@ -69,6 +68,8 @@ export default function Chatpanel() {
   const open = Boolean(anchorEl);
   const open2 = Boolean(anchorE2);
   const [open3, setOpen3] = React.useState(false);
+  const matches = useMediaQuery("(min-width:1000px)");
+  const drawerWidth = matches ? 240 : 0;
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -178,7 +179,7 @@ export default function Chatpanel() {
             {selectedChat
               ? selectedChat.isGroupChat
                 ? selectedChat.chatName
-                : selectedChat.users[1].name
+                : getSender(loggedUser, selectedChat.users)
               : "Chat App"}
           </Typography>
 
@@ -307,6 +308,7 @@ export default function Chatpanel() {
           />
         </IconButton>
       </Drawer>
+
       <Drawer
         sx={{
           width: drawerWidth,
@@ -423,6 +425,7 @@ export default function Chatpanel() {
           ))}
         </List>
       </Drawer>
+
       <Box component="main" sx={{ flexGrow: 1, bgcolor: "#EDE4F5", p: 0 }}>
         {/* <Toolbar /> */}
         <Box
@@ -433,6 +436,7 @@ export default function Chatpanel() {
             justifyContent: "center",
             marginTop: "0px",
             height: "100vh",
+            width: "100%",
             bgcolor: "#EDE4F5",
             padding: 0,
             margin: 0,
