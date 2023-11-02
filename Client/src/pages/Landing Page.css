@@ -38,6 +38,13 @@
   height: 639px;
 }
 
+.arrow-icon {
+  position: fixed;
+  bottom: 10px;
+  left: 95%;
+  object-fit: cover;
+}
+
 .app-name {
   position: absolute;
   top: 46px;

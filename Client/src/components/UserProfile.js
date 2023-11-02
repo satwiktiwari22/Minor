@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import AddIcon from "@mui/icons-material/Add";
-
+import { getSender, getSenderEmail } from "../config/ChatLogics";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 
@@ -16,7 +16,7 @@ const UserProfile = ({ user, selectedChat }) => {
 
   return (
     <>
-      {user && (
+      {user && selectedChat && (
         <Avatar
           onClick={handleOpen}
           sx={{
@@ -31,8 +31,8 @@ const UserProfile = ({ user, selectedChat }) => {
           {selectedChat
             ? selectedChat.isGroupChat
               ? selectedChat.chatName[0]
-              : selectedChat.users[1].name[0]
-            : "CA"}
+              : getSender(user, selectedChat.users)[0]
+            : null}
         </Avatar>
       )}
       <Modal
@@ -59,14 +59,14 @@ const UserProfile = ({ user, selectedChat }) => {
             {selectedChat
               ? selectedChat.isGroupChat
                 ? selectedChat.chatName
-                : selectedChat.users[1].name
+                : getSender(user, selectedChat.users)
               : "Chat App"}
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             {selectedChat
               ? selectedChat.isGroupChat
                 ? "Group Chat"
-                : selectedChat.users[1].email
+                : getSenderEmail(user, selectedChat.users)
               : "Welcome to Chat App"}
           </Typography>
         </Box>

@@ -17,6 +17,8 @@ import io from "socket.io-client";
 import Lottie, { LottiePlayer } from "lottie-react";
 import * as typingAnimation from "../animations/typer.json";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
 
 const ENDPOINT = "http://localhost:5000";
 var socket, selectedChatCompare;
@@ -25,10 +27,19 @@ const SingleChat = ({ selectedChat }) => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState("");
-  const { user, setSelectedChat } = ChatState();
+  const { user, setSelectedChat, notifications, setNotifications } =
+    ChatState();
   const [socketConnected, setSocketConnected] = useState(false);
   const [typing, setTyping] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
+  const [emojiPicker, setEmojiPicker] = useState(false);
+  const toggleEmojiPicker = () => {
+    setEmojiPicker(!emojiPicker);
+  };
+  const addEmoji = (e) => {
+    let emoji = e.native;
+    setNewMessage(newMessage + emoji);
+  };
   const matches = useMediaQuery("(max-width:1000px)");
 
   const fetchMessages = async () => {
@@ -79,7 +90,9 @@ const SingleChat = ({ selectedChat }) => {
         !selectedChatCompare ||
         selectedChatCompare._id !== newMessageRecieved.chat._id
       ) {
-        //show notification
+        if (!notifications.includes(newMessageRecieved)) {
+          setNotifications([...notifications, newMessageRecieved]);
+        }
       } else {
         setMessages([...messages, newMessageRecieved]);
       }
@@ -176,6 +189,20 @@ const SingleChat = ({ selectedChat }) => {
           ) : (
             <></>
           )}
+          {emojiPicker && (
+            <div>
+              <Picker
+                data={data}
+                onEmojiSelect={addEmoji}
+                style={{
+                  position: "fixed",
+                  bottom: 1,
+                  left: matches ? "15%" : "25%",
+                  zIndex: 1000,
+                }}
+              />
+            </div>
+          )}
           <Toolbar
             sx={{
               position: "fixed",
@@ -184,7 +211,7 @@ const SingleChat = ({ selectedChat }) => {
               bgcolor: "#EDE4F5",
             }}
           >
-            <IconButton>
+            <IconButton onClick={toggleEmojiPicker}>
               <InsertEmoticonIcon
                 sx={{ color: "#751CCE", fontSize: "30px", margin: "0 5px" }}
               />
@@ -222,7 +249,20 @@ const SingleChat = ({ selectedChat }) => {
           </Toolbar>
         </Box>
       ) : (
-        <Box>
+        <Box
+          sx={{
+            width: matches ? `calc(100% - 150px)` : `calc(100% - 450px)`,
+            height: `calc(100% - 170px)`,
+            position: "absolute",
+            top: "80px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "#EDE4F5",
+            padding: "0 30px",
+          }}
+        >
           <h1>Chat App</h1>
           <p>Click on a chat to start messaging</p>
         </Box>
