@@ -8,31 +8,30 @@ import AddIcon from "@mui/icons-material/Add";
 import { getSender, getSenderEmail } from "../config/ChatLogics";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
 
-const UserProfile = ({ user, selectedChat }) => {
+const UserSelf = ({ user }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   return (
     <>
-      {user && selectedChat && (
-        <Avatar
-          onClick={handleOpen}
-          sx={{
-            margin: "10px 15px",
-            marginTop: 2,
-            width: 34,
-            height: 34,
-            color: "#751CCE",
-            backgroundColor: "#E5D6F4",
-            cursor: "pointer",
-          }}
-        >
-          {selectedChat && selectedChat.isGroupChat
-            ? selectedChat && selectedChat.chatName[0]
-            : getSender(user, selectedChat.users) &&
-              getSender(user, selectedChat.users)[0]}
-        </Avatar>
+      {user && (
+        <Tooltip title="Profile">
+          <Avatar
+            onClick={handleOpen}
+            sx={{
+              margin: "10px 15px",
+              marginTop: 2,
+              width: 34,
+              height: 34,
+              color: "var(--background-2)",
+              backgroundColor: "var(--background)",
+            }}
+          >
+            {user && user.name[0]}
+          </Avatar>
+        </Tooltip>
       )}
       <Modal
         open={open}
@@ -55,18 +54,10 @@ const UserProfile = ({ user, selectedChat }) => {
           }}
         >
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            {selectedChat
-              ? selectedChat.isGroupChat
-                ? selectedChat.chatName
-                : getSender(user, selectedChat.users)
-              : "Chat App"}
+            Name: {user.name}
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {selectedChat
-              ? selectedChat.isGroupChat
-                ? "Group Chat"
-                : getSenderEmail(user, selectedChat.users)
-              : "Welcome to Chat App"}
+            Email: {user.email}
           </Typography>
         </Box>
       </Modal>
@@ -74,4 +65,4 @@ const UserProfile = ({ user, selectedChat }) => {
   );
 };
 
-export default UserProfile;
+export default UserSelf;

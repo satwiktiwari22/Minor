@@ -1,4 +1,5 @@
 import * as React from "react";
+import "../index.css";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -53,6 +54,10 @@ import UpdateGroupChatModal from "../components/UpdateGroupChatModal";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Badge from "@mui/material/Badge";
+import Switch from "@mui/material/Switch";
+import UserSelf from "../components/UserSelf";
+import Tooltip from "@mui/material/Tooltip";
+// import useLocalStorage from "use-local-storage";
 
 export default function Chatpanel() {
   const [loggedUser, setLoggedUser] = useState();
@@ -168,14 +173,14 @@ export default function Chatpanel() {
   }, [navigate, user, fetchAgain]);
 
   return (
-    <Box sx={{ display: "flex", bgcolor: "#EDE4F5" }}>
+    <Box sx={{ display: "flex", bgcolor: "var(--background)" }}>
       <CssBaseline />
       <AppBar
         position="fixed"
         sx={{
           width: `calc(100% - ${drawerWidth + 64}px)`,
-          backgroundColor: "#751CCE",
-          color: "#EDF4F5",
+          backgroundColor: "var(--background-2)",
+          color: "var(--background)",
         }}
       >
         <Toolbar>
@@ -205,8 +210,8 @@ export default function Chatpanel() {
           "& .MuiDrawer-paper": {
             width: 64,
             boxSizing: "border-box",
-            backgroundColor: "#280948",
-            color: "#fff",
+            backgroundColor: "var(--background-3)",
+            color: "var(--text-1)",
             left: 0,
             overflow: "hidden",
           },
@@ -224,31 +229,22 @@ export default function Chatpanel() {
                   {(() => {
                     switch (index) {
                       case 0:
-                        return (
-                          <Avatar
-                            sx={{
-                              margin: "10px 15px",
-                              marginTop: 2,
-                              width: 34,
-                              height: 34,
-                              color: "#751CCE",
-                              backgroundColor: "#E5D6F4",
-                            }}
-                          />
-                        );
+                        return <UserSelf user={user} />;
                       case 1:
                         return (
-                          <HomeIcon
-                            sx={{
-                              margin: "10px 15px",
-                              color: "#E5D6F4",
-                              width: "30px",
-                              height: "30px",
-                            }}
-                            onClick={() => {
-                              setSelectedChat(null);
-                            }}
-                          />
+                          <Tooltip title="Home">
+                            <HomeIcon
+                              sx={{
+                                margin: "10px 15px",
+                                color: "var(--background)",
+                                width: "30px",
+                                height: "30px",
+                              }}
+                              onClick={() => {
+                                setSelectedChat(null);
+                              }}
+                            />
+                          </Tooltip>
                         );
                       case 2:
                         return (
@@ -262,22 +258,26 @@ export default function Chatpanel() {
                       case 3:
                         return (
                           <div>
-                            <Button
-                              id="basic-button2"
-                              aria-controls={open2 ? "basic-menu2" : undefined}
-                              aria-haspopup="true"
-                              aria-expanded={open2 ? "true" : undefined}
-                              onClick={handleClick2}
-                              sx={{ left: "0px" }}
-                            >
-                              <MoreHorizIcon
-                                sx={{
-                                  color: "#E5D6F4",
-                                  width: "30px",
-                                  height: "30px",
-                                }}
-                              />
-                            </Button>
+                            <Tooltip title="More">
+                              <Button
+                                id="basic-button2"
+                                aria-controls={
+                                  open2 ? "basic-menu2" : undefined
+                                }
+                                aria-haspopup="true"
+                                aria-expanded={open2 ? "true" : undefined}
+                                onClick={handleClick2}
+                                sx={{ left: "0px" }}
+                              >
+                                <MoreHorizIcon
+                                  sx={{
+                                    color: "var(--background)",
+                                    width: "30px",
+                                    height: "30px",
+                                  }}
+                                />
+                              </Button>
+                            </Tooltip>
                             <Menu
                               id="basic-menu2"
                               anchorEl={anchorE2}
@@ -290,9 +290,11 @@ export default function Chatpanel() {
                               <MenuItem onClick={null}>
                                 Change Background
                               </MenuItem>
-                              <MenuItem onClick={null}>Switch Mode</MenuItem>
+                              <MenuItem onClick={null}>
+                                Switch Mode
+                                <Switch />
+                              </MenuItem>
                               <MenuItem onClick={null}>Feedback</MenuItem>
-                              <MenuItem onClick={null}>Help</MenuItem>
                             </Menu>
                           </div>
                         );
@@ -312,18 +314,26 @@ export default function Chatpanel() {
                               }}
                               sx={{ left: "0px" }}
                             >
-                              <Badge
-                                badgeContent={notifications.length}
-                                color="secondary"
+                              <Tooltip
+                                title={
+                                  notifications.length > 0
+                                    ? "Click to see new notifications"
+                                    : "no new notifications"
+                                }
                               >
-                                <NotificationsIcon
-                                  sx={{
-                                    color: "#E5D6F4",
-                                    width: "30px",
-                                    height: "30px",
-                                  }}
-                                />
-                              </Badge>
+                                <Badge
+                                  badgeContent={notifications.length}
+                                  color="secondary"
+                                >
+                                  <NotificationsIcon
+                                    sx={{
+                                      color: "var(--background)",
+                                      width: "30px",
+                                      height: "30px",
+                                    }}
+                                  />
+                                </Badge>
+                              </Tooltip>
                             </Button>
                             <Menu
                               id="basic-menu-notification"
@@ -380,13 +390,15 @@ export default function Chatpanel() {
             navigate("/desktop-2");
           }}
         >
-          <LogoutIcon
-            sx={{
-              color: "#E5D6F4",
-              width: "30px",
-              height: "30px",
-            }}
-          />
+          <Tooltip title="Logout" placement="right">
+            <LogoutIcon
+              sx={{
+                color: "var(--background)",
+                width: "30px",
+                height: "30px",
+              }}
+            />
+          </Tooltip>
         </IconButton>
       </Drawer>
 
@@ -398,8 +410,8 @@ export default function Chatpanel() {
           "& .MuiDrawer-paper": {
             width: drawerWidth,
             boxSizing: "border-box",
-            backgroundColor: "#751CCE",
-            color: "#fff",
+            backgroundColor: "var(--background-2)",
+            color: "var(--text-1)",
             left: 64,
           },
         }}
@@ -417,14 +429,28 @@ export default function Chatpanel() {
               height: 40,
             }}
           >
-            <IconButton
-              sx={{ p: "5px", fontSize: "20px" }}
+            <Button
+              sx={{
+                width: "100%",
+                fontSize: "16px",
+                color: "#751CCA",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-start",
+              }}
               aria-label="search"
               onClick={() => setOpen3(!open3)}
             >
-              <SearchIcon />
-              Search here
-            </IconButton>
+              <SearchIcon
+                sx={{
+                  color: "#751CCA",
+                  width: "20px",
+                  height: "20px",
+                  marginRight: "5px",
+                }}
+              />
+              Search Users
+            </Button>
           </Paper>
           <Dialog open={open3} onClose={() => setOpen3(false)}>
             <DialogTitle>Search</DialogTitle>
@@ -468,7 +494,7 @@ export default function Chatpanel() {
             </DialogActions>
           </Dialog>
         </Toolbar>
-        <Divider color="#EDE4F5" />
+        <Divider color="#fff" />
         <List sx={{ px: 1 }}>
           {chats &&
             chats.map((chat) => (
@@ -476,7 +502,7 @@ export default function Chatpanel() {
                 key={chat._id}
                 sx={{
                   backgroundColor:
-                    chat === selectedChat ? "#280948" : "#751CCA",
+                    chat === selectedChat ? "var(--background-3)" : "#751CCA",
                   borderRadius: "6px",
                   margin: "5px 0",
                   padding: "8px 10px",
@@ -492,12 +518,12 @@ export default function Chatpanel() {
               </ListItem>
             ))}
         </List>
-        <Divider color="#EDE4F5" />
+
         <List>
           {[].map((text, index) => (
             <ListItem key={index} disablePadding>
               <ListItemButton>
-                <ListItemIcon sx={{ color: "#E5D6F4" }}>
+                <ListItemIcon sx={{ color: "var(--background)" }}>
                   {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
                 </ListItemIcon>
                 <ListItemText primary={text} />
@@ -507,7 +533,10 @@ export default function Chatpanel() {
         </List>
       </Drawer>
 
-      <Box component="main" sx={{ flexGrow: 1, bgcolor: "#EDE4F5", p: 0 }}>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, bgcolor: "var(--background)", p: 0 }}
+      >
         {/* <Toolbar /> */}
         <Box
           sx={{
@@ -518,7 +547,7 @@ export default function Chatpanel() {
             marginTop: "0px",
             height: "100vh",
             width: "100%",
-            bgcolor: "#EDE4F5",
+            bgcolor: "var(--background)",
             padding: 0,
             margin: 0,
           }}

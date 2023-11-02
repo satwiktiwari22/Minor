@@ -8,6 +8,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { ChatState } from "../Context/Chatprovider";
 import UserBadgeItem from "./UserBadgeItem";
 import axios from "axios";
+import Tooltip from "@mui/material/Tooltip";
 
 const GroupChatModal = ({ fetchAgain, setFetchAgain }) => {
   const [open, setOpen] = useState(false);
@@ -134,15 +135,17 @@ const GroupChatModal = ({ fetchAgain, setFetchAgain }) => {
 
   return (
     <>
-      <Button onClick={handleOpen}>
-        <AddIcon
-          sx={{
-            color: "#E5D6F4",
-            width: "30px",
-            height: "30px",
-          }}
-        />
-      </Button>
+      <Tooltip title="Create Group Chat">
+        <Button onClick={handleOpen}>
+          <AddIcon
+            sx={{
+              color: "#E5D6F4",
+              width: "30px",
+              height: "30px",
+            }}
+          />
+        </Button>
+      </Tooltip>
       <Modal
         open={open}
         onClose={handleClose}

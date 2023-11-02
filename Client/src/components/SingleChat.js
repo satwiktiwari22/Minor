@@ -157,7 +157,7 @@ const SingleChat = ({ selectedChat }) => {
             display: "flex",
             flexDirection: "column",
             justifyContent: "flex-end",
-            backgroundColor: "#EDE4F5",
+            backgroundColor: "none",
             padding: "0 30px",
           }}
         >
@@ -208,18 +208,23 @@ const SingleChat = ({ selectedChat }) => {
               position: "fixed",
               bottom: 2,
               left: matches ? "15%" : "25%",
-              bgcolor: "#EDE4F5",
+              bgcolor: "var(--background)",
             }}
           >
             <IconButton onClick={toggleEmojiPicker}>
               <InsertEmoticonIcon
-                sx={{ color: "#751CCE", fontSize: "30px", margin: "0 5px" }}
+                sx={{
+                  color: "var(--background-2)",
+                  fontSize: "30px",
+                  margin: "0 5px",
+                }}
               />
             </IconButton>
 
             <Paper
               component="form"
               sx={{
+                color: "var(--text-1)",
                 p: "0.5px 4px",
                 display: "flex",
                 alignItems: "center",
@@ -229,7 +234,13 @@ const SingleChat = ({ selectedChat }) => {
               }}
             >
               <InputBase
-                sx={{ ml: 1, flex: 1, marginLeft: "20px", width: "55vw" }}
+                sx={{
+                  ml: 1,
+                  flex: 1,
+                  marginLeft: "20px",
+                  width: "55vw",
+                  color: "var(--text-2)",
+                }}
                 placeholder="Type a message"
                 inputProps={{ "aria-label": "Type a message" }}
                 onChange={typingHandler}
@@ -243,7 +254,11 @@ const SingleChat = ({ selectedChat }) => {
             </Paper>
             <IconButton onClick={sendMessage}>
               <SendIcon
-                sx={{ color: "#751CCE", fontSize: "30px", margin: "0 5px" }}
+                sx={{
+                  color: "var(--background-2)",
+                  fontSize: "30px",
+                  margin: "0 5px",
+                }}
               />
             </IconButton>
           </Toolbar>
@@ -259,7 +274,7 @@ const SingleChat = ({ selectedChat }) => {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: "#EDE4F5",
+            backgroundColor: "var(--background)",
             padding: "0 30px",
           }}
         >
