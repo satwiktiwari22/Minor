@@ -24,7 +24,7 @@ const UserProfile = ({ user, selectedChat }) => {
             width: 34,
             height: 34,
             color: "#751CCE",
-            backgroundColor: "#E5D6F4",
+            backgroundColor: "#EDE4F5",
             cursor: "pointer",
           }}
         >
