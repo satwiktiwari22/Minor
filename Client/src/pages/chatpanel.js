@@ -60,18 +60,6 @@ import UpdateGroupChatModal from "../components/UpdateGroupChatModal";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 export default function Chatpanel() {
-  // const [msg, setMsg] = useState("");
-  // const [showEmojiPicker, setEmojiPicker] = useState(false);
-  // const handleEmojiPicker = () => {
-  //   setEmojiPicker(!showEmojiPicker);
-  // };
-  // const handleEmojiClick = (event, emojiobj) => {
-  //   console.log(emojiobj.emoji);
-  //   let message = msg;
-  //   message += emojiobj.emoji;
-  //   setMsg(message);
-  // };
-
   const [loggedUser, setLoggedUser] = useState();
   const { user, selectedChat, setSelectedChat, chats, setChats } = ChatState();
   const [anchorEl, setAnchorEl] = React.useState(null);
