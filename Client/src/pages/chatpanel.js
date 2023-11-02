@@ -129,7 +129,8 @@ export default function Chatpanel() {
           setChats([res, ...chats]);
         }
         console.log(res);
-        setSelectedChat(res);
+
+        setFetchAgain(!fetchAgain);
       } else {
         console.log("error");
       }
@@ -252,7 +253,10 @@ export default function Chatpanel() {
                       case 2:
                         return (
                           <div>
-                            <GroupChatModal />
+                            <GroupChatModal
+                              fetchAgain={fetchAgain}
+                              setFetchAgain={setFetchAgain}
+                            />
                           </div>
                         );
                       case 3:

@@ -13,7 +13,6 @@ const UserProfile = ({ user, selectedChat }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
   return (
     <>
       {user && selectedChat && (
@@ -28,11 +27,10 @@ const UserProfile = ({ user, selectedChat }) => {
             backgroundColor: "#E5D6F4",
           }}
         >
-          {selectedChat
-            ? selectedChat.isGroupChat
-              ? selectedChat.chatName[0]
-              : getSender(user, selectedChat.users)[0]
-            : null}
+          {selectedChat && selectedChat.isGroupChat
+            ? selectedChat && selectedChat.chatName[0]
+            : getSender(user, selectedChat.users) &&
+              getSender(user, selectedChat.users)[0]}
         </Avatar>
       )}
       <Modal

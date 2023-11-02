@@ -9,7 +9,7 @@ import { ChatState } from "../Context/Chatprovider";
 import UserBadgeItem from "./UserBadgeItem";
 import axios from "axios";
 
-const GroupChatModal = () => {
+const GroupChatModal = ({ fetchAgain, setFetchAgain }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -103,6 +103,7 @@ const GroupChatModal = () => {
         config
       );
       setChats([data, ...chats]);
+      setFetchAgain(!fetchAgain);
       handleClose();
     } catch (error) {
       console.log(error);
