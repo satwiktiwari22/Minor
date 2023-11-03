@@ -54,10 +54,10 @@ const UserSelf = ({ user }) => {
           }}
         >
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Name: {user.name}
+            Name: {user && user.name}
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Email: {user.email}
+            Email: {user && user.email}
           </Typography>
         </Box>
       </Modal>

@@ -9,7 +9,6 @@ import { useState, useEffect } from "react";
 import { ChatState } from "../Context/Chatprovider";
 import CircularProgress from "@mui/material/CircularProgress";
 import IconButton from "@mui/material/IconButton";
-import { Icon } from "@mui/material";
 import axios from "axios";
 import "./styles.css";
 import ScrollableChat from "./ScrollableChat";

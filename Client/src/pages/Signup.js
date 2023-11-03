@@ -6,6 +6,7 @@ import Snackbar from "@mui/material/Snackbar";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Alert from "@mui/material/Alert";
+import { emailValidation } from "../config/ChatLogics";
 import { ChatState } from "../Context/Chatprovider";
 const Desktop3 = () => {
   const [username, setUsername] = useState("");
@@ -14,6 +15,7 @@ const Desktop3 = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [open1, setOpen1] = useState(false);
   const { setUser } = ChatState();
 
   const handleClose = (event, reason) => {
@@ -22,9 +24,19 @@ const Desktop3 = () => {
     }
     setOpen(false);
   };
+  const handleClose1 = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen1(false);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!emailValidation(email)) {
+      setOpen1(true);
+      return;
+    }
     const response = await fetch("http://localhost:5000/api/users", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -94,6 +106,15 @@ const Desktop3 = () => {
               sx={{ width: "100%" }}
             >
               Please fill all the fields
+            </Alert>
+          </Snackbar>
+          <Snackbar open={open1} autoHideDuration={6000} onClose={handleClose1}>
+            <Alert
+              onClose={handleClose1}
+              severity="error"
+              sx={{ width: "100%" }}
+            >
+              Please enter a valid email
             </Alert>
           </Snackbar>
         </form>

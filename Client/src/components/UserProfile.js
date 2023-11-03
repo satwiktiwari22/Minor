@@ -64,7 +64,8 @@ const UserProfile = ({ user, selectedChat }) => {
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             {selectedChat
               ? selectedChat.isGroupChat
-                ? "Group Chat"
+                ? "Users in this group: " +
+                  selectedChat.users.map((user) => user.name).join(", ")
                 : getSenderEmail(user, selectedChat.users)
               : "Welcome to Chat App"}
           </Typography>

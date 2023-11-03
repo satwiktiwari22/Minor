@@ -57,6 +57,7 @@ import Badge from "@mui/material/Badge";
 import Switch from "@mui/material/Switch";
 import UserSelf from "../components/UserSelf";
 import Tooltip from "@mui/material/Tooltip";
+import CircularProgress from "@mui/material/CircularProgress";
 // import useLocalStorage from "use-local-storage";
 
 export default function Chatpanel() {
@@ -73,6 +74,7 @@ export default function Chatpanel() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorE2, setAnchorE2] = React.useState(null);
   const [anchorE3, setAnchorE3] = React.useState(null);
+  const [loading, setLoading] = useState(false);
   const open = Boolean(anchorEl);
   const openNotf = Boolean(anchorE3);
   const open2 = Boolean(anchorE2);
@@ -146,6 +148,7 @@ export default function Chatpanel() {
 
   const [fetchAgain, setFetchAgain] = useState(false);
   const fetchChats = async () => {
+    setLoading(true);
     console.log(user);
     try {
       const response = await fetch("http://localhost:5000/api/chat", {
@@ -158,6 +161,7 @@ export default function Chatpanel() {
       const res = await response.json();
       if (response.ok) {
         console.log(res);
+        setLoading(false);
         setChats(res);
       } else {
         console.log("error");
@@ -496,7 +500,20 @@ export default function Chatpanel() {
         </Toolbar>
         <Divider color="#fff" />
         <List sx={{ px: 1 }}>
-          {chats &&
+          {loading ? (
+            <CircularProgress
+              sx={{
+                margin: "20px auto",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "100%",
+                height: "100%",
+                color: "var(--background)",
+              }}
+            />
+          ) : (
+            chats &&
             chats.map((chat) => (
               <ListItem
                 key={chat._id}
@@ -516,7 +533,8 @@ export default function Chatpanel() {
                   : chat.chatName}
                 <ListItemText />
               </ListItem>
-            ))}
+            ))
+          )}
         </List>
 
         <List>
