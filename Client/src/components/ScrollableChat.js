@@ -41,26 +41,37 @@ const ScrollableChat = ({ messages }) => {
                 </Avatar>
               </Tooltip>
             )}
-            <span
-              style={{
-                backgroundColor: `${
-                  m.sender._id === user._id
-                    ? "var(--background-2)"
-                    : "var(--chatBackground)"
-                }`,
-                color: `${
-                  m.sender._id === user._id ? "#fff" : "var(--text-2)"
-                }`,
-                borderRadius: "20px",
-                padding: "5px 15px",
-                width: "fit-content",
-                maxWidth: "70%",
-                marginTop: `${isSameUser(messages, m, i) ? "2px" : "5px"}`,
-                marginLeft: isSameSenderMargin(messages, m, i, user._id),
-              }}
+            <Tooltip
+              title={
+                "Sent at " +
+                new Date(m.createdAt).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
+              }
+              placement="left"
             >
-              {m.content}
-            </span>
+              <span
+                style={{
+                  backgroundColor: `${
+                    m.sender._id === user._id
+                      ? "var(--background-2)"
+                      : "var(--chatBackground)"
+                  }`,
+                  color: `${
+                    m.sender._id === user._id ? "#fff" : "var(--text-2)"
+                  }`,
+                  borderRadius: "20px",
+                  padding: "7px 15px",
+                  width: "fit-content",
+                  maxWidth: "70%",
+                  marginTop: `${isSameUser(messages, m, i) ? "2px" : "5px"}`,
+                  marginLeft: isSameSenderMargin(messages, m, i, user._id),
+                }}
+              >
+                {m.content}
+              </span>
+            </Tooltip>
           </div>
         ))}
     </ScrollableFeed>
