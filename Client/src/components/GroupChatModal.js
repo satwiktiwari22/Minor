@@ -266,7 +266,7 @@ const GroupChatModal = ({ fetchAgain, setFetchAgain }) => {
               </button>
             </div>
           ))}
-          <Snackbar open={open1} autoHideDuration={6000} onClose={handleClose}>
+          <Snackbar open={open1} autoHideDuration={3000} onClose={handleClose1}>
             <Alert
               onClose={handleClose1}
               severity="error"

@@ -15,3 +15,14 @@
     --text-1: #fff;
     --text-2: black;
 }
+
+/* .time-display {
+    display: none;
+    visibility: hidden;
+    /* ... other styles */
+
+
+/* .message-container:hover .time-display {
+    display: block;
+    visibility: visible;
+} */

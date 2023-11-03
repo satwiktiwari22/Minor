@@ -520,18 +520,22 @@ export default function Chatpanel() {
                 sx={{
                   backgroundColor:
                     chat === selectedChat ? "var(--background-3)" : "#751CCA",
+
+                  border: chat === selectedChat ? "1px solid" : "none",
+                  borderColor: "var(--background)",
                   borderRadius: "6px",
                   margin: "5px 0",
-                  padding: "8px 10px",
+                  padding: "5px 10px",
                 }}
                 onClick={() => {
                   setSelectedChat(chat);
                 }}
               >
-                {!chat.isGroupChat
-                  ? getSender(loggedUser, chat.users)
-                  : chat.chatName}
-                <ListItemText />
+                <ListItemText>
+                  {!chat.isGroupChat
+                    ? getSender(loggedUser, chat.users)
+                    : chat.chatName}
+                </ListItemText>
               </ListItem>
             ))
           )}
