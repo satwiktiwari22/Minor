@@ -33,8 +33,8 @@ const ScrollableChat = ({ messages }) => {
                     width: "35px",
                     height: "35px",
                     margin: "5px 5px 0px 5px",
-                    backgroundColor: "#751CCE",
-                    color: "#E5D6F4",
+                    backgroundColor: "var(--background-2)",
+                    color: "var(--chatBackground)",
                   }}
                 >
                   {m.sender.name[0]}
@@ -44,9 +44,13 @@ const ScrollableChat = ({ messages }) => {
             <span
               style={{
                 backgroundColor: `${
-                  m.sender._id === user._id ? "#751CCE" : "#E5D6F4"
+                  m.sender._id === user._id
+                    ? "var(--background-2)"
+                    : "var(--chatBackground)"
                 }`,
-                color: `${m.sender._id === user._id ? "white" : "black"}`,
+                color: `${
+                  m.sender._id === user._id ? "#fff" : "var(--text-2)"
+                }`,
                 borderRadius: "20px",
                 padding: "5px 15px",
                 width: "fit-content",

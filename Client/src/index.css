@@ -1,0 +1,17 @@
+:root {
+    --background: #EDE4F5;
+    --background-2: #751CCE;
+    --background-3: #280948;
+    --chatBackground: #E5D6F4;
+    --text-1: #fff;
+    --text-2: black;
+}
+
+[data-theme="dark"] {
+    --background: #280948;
+    --background-2: #751CCE;
+    --background-3: #EDE4F5;
+    --chatBackground: #E5D6F4;
+    --text-1: #fff;
+    --text-2: black;
+}

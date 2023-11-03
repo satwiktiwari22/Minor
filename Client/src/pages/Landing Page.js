@@ -31,7 +31,7 @@ const Desktop1 = () => {
     <div className="desktop-1">
       <ArrowCircleUpOutlinedIcon
         className="arrow-icon"
-        sx={{ width: "30px", height: "30px" }}
+        sx={{ width: "30px", height: "30px", cursor: "pointer" }}
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       />
       <div className="desktop-1-child" />
@@ -82,12 +82,12 @@ const Desktop1 = () => {
         </div>
         <div className="anchor-frame-6" data-scroll-to="frameContainer1" />
       </div>
-      <a className="instagram" />
-      <a className="twitterx" />
-      <a className="linkedin" />
+      <a className="instagram" href="https://instagram.com" />
+      <a className="twitterx" href="https://twitter.com" />
+      <a className="linkedin" href="https://linkedin.com" />
       <img className="phone-icon" alt="" src="/undefined3.png" />
       <div className="mailid-parent">
-        <div className="mailid">chatsenseoriginal@mail.com</div>
+        <div className="mailid">minordemo@acropolis.in</div>
         <div className="div">+911234567890</div>
         <img className="email-sign-icon" alt="" src="/undefined4.png" />
       </div>
