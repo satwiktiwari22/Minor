@@ -47,16 +47,19 @@ const UserSelf = ({ user }) => {
             transform: "translate(-50%, -50%)",
             width: 400,
             bgcolor: "background.paper",
-            border: "2px solid #000",
+            border: "2px solid var(--background-3)",
             borderRadius: "10px",
             boxShadow: 12,
             p: 4,
           }}
         >
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Name: {user && user.name}
+            User Profile -
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Name: {user && user.name}
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 1 }}>
             Email: {user && user.email}
           </Typography>
         </Box>

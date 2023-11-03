@@ -44,7 +44,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { getSender } from "../config/ChatLogics";
+import { getSender, isSameSender } from "../config/ChatLogics";
 import { ChatState } from "../Context/Chatprovider";
 import { set } from "mongoose";
 import GroupChatModal from "../components/GroupChatModal";
@@ -58,6 +58,7 @@ import Switch from "@mui/material/Switch";
 import UserSelf from "../components/UserSelf";
 import Tooltip from "@mui/material/Tooltip";
 import CircularProgress from "@mui/material/CircularProgress";
+import Feedback from "../components/Feedback";
 // import useLocalStorage from "use-local-storage";
 
 export default function Chatpanel() {
@@ -298,7 +299,7 @@ export default function Chatpanel() {
                                 Switch Mode
                                 <Switch />
                               </MenuItem>
-                              <MenuItem onClick={null}>Feedback</MenuItem>
+                              <Feedback />
                             </Menu>
                           </div>
                         );
@@ -535,6 +536,19 @@ export default function Chatpanel() {
                   {!chat.isGroupChat
                     ? getSender(loggedUser, chat.users)
                     : chat.chatName}
+                  {chat.latestMessage && (
+                    <div
+                      style={{
+                        fontSize: "10px",
+                        marginTop: "5px",
+                      }}
+                    >
+                      <b>{chat.latestMessage.sender.name} : </b>
+                      {chat.latestMessage.content.length > 50
+                        ? chat.latestMessage.content.substring(0, 51) + "..."
+                        : chat.latestMessage.content}
+                    </div>
+                  )}
                 </ListItemText>
               </ListItem>
             ))
