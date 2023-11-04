@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+
 const ChatContext = createContext();
 import {
   BrowserRouter as Router,
@@ -12,7 +13,7 @@ const ChatProvider = ({ children }) => {
   const [selectedChat, setSelectedChat] = useState();
   const [chats, setChats] = useState([]);
   const [notifications, setNotifications] = useState([]);
-  const [theme, setTheme] = useState("light");
+
   // theme state future implementation
   const navigate = useNavigate();
   useEffect(() => {

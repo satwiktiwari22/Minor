@@ -8,15 +8,23 @@ import AddIcon from "@mui/icons-material/Add";
 import { ChatState } from "../Context/Chatprovider";
 import UserBadgeItem from "./UserBadgeItem";
 import axios from "axios";
+import Tooltip from "@mui/material/Tooltip";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
-const GroupChatModal = () => {
+// import CircularProgress from "@mui/material/CircularProgress";
+
+const GroupChatModal = ({ fetchAgain, setFetchAgain }) => {
   const [open, setOpen] = useState(false);
+  const [open1, setOpen1] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const handleClose1 = () => setOpen1(false);
   const [groupChatName, setGroupChatName] = useState("");
   const [groupChatMembers, setGroupChatMembers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  // const [loading, setLoading] = useState(false);
   const { user, chats, setChats } = ChatState();
   const handleDelete = (userToDelete) => {
     setGroupChatMembers(
@@ -51,7 +59,7 @@ const GroupChatModal = () => {
 
   const handleGroup = (userToAdd) => {
     if (groupChatMembers.includes(userToAdd)) {
-      console.log("already in group");
+      setOpen1(true);
       return;
     } else {
       console.log("adding to group");
@@ -103,6 +111,7 @@ const GroupChatModal = () => {
         config
       );
       setChats([data, ...chats]);
+      setFetchAgain(!fetchAgain);
       handleClose();
     } catch (error) {
       console.log(error);
@@ -133,15 +142,17 @@ const GroupChatModal = () => {
 
   return (
     <>
-      <Button onClick={handleOpen}>
-        <AddIcon
-          sx={{
-            color: "#E5D6F4",
-            width: "30px",
-            height: "30px",
-          }}
-        />
-      </Button>
+      <Tooltip title="Create Group Chat">
+        <Button onClick={handleOpen}>
+          <AddIcon
+            sx={{
+              color: "#E5D6F4",
+              width: "30px",
+              height: "30px",
+            }}
+          />
+        </Button>
+      </Tooltip>
       <Modal
         open={open}
         onClose={handleClose}
@@ -255,6 +266,15 @@ const GroupChatModal = () => {
               </button>
             </div>
           ))}
+          <Snackbar open={open1} autoHideDuration={3000} onClose={handleClose1}>
+            <Alert
+              onClose={handleClose1}
+              severity="error"
+              sx={{ width: "100%" }}
+            >
+              User already in the group
+            </Alert>
+          </Snackbar>
         </Box>
       </Modal>
     </>

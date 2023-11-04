@@ -9,7 +9,7 @@ import Desktop1 from "./pages/Landing Page";
 import Desktop3 from "./pages/Signup";
 import Desktop2 from "./pages/Login";
 import Chatpanel from "./pages/chatpanel";
-
+import "./index.css";
 function App() {
   const action = useNavigationType();
   const location = useLocation();
