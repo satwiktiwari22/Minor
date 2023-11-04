@@ -35,6 +35,7 @@ body {
   --color-paleturquoise: #c7fbe9;
   --color-mediumseagreen: #1cb07c;
 
+
   /* Paddings */
   --padding-7xs-6: 5.6px;
 
@@ -43,6 +44,9 @@ body {
   --br-xs: 12px;
   --br-11xs: 2px;
 }
+
+
+
 
 .someIcons {
   width: 30px;

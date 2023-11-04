@@ -33,30 +33,45 @@ const ScrollableChat = ({ messages }) => {
                     width: "35px",
                     height: "35px",
                     margin: "5px 5px 0px 5px",
-                    backgroundColor: "#751CCE",
-                    color: "#E5D6F4",
+                    backgroundColor: "var(--background-2)",
+                    color: "var(--chatBackground)",
                   }}
                 >
                   {m.sender.name[0]}
                 </Avatar>
               </Tooltip>
             )}
-            <span
-              style={{
-                backgroundColor: `${
-                  m.sender._id === user._id ? "#751CCE" : "#E5D6F4"
-                }`,
-                color: `${m.sender._id === user._id ? "white" : "black"}`,
-                borderRadius: "20px",
-                padding: "5px 15px",
-                width: "fit-content",
-                maxWidth: "70%",
-                marginTop: `${isSameUser(messages, m, i) ? "2px" : "5px"}`,
-                marginLeft: isSameSenderMargin(messages, m, i, user._id),
-              }}
+            <Tooltip
+              title={
+                "Sent at " +
+                new Date(m.createdAt).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
+              }
+              placement="left"
             >
-              {m.content}
-            </span>
+              <span
+                style={{
+                  backgroundColor: `${
+                    m.sender._id === user._id
+                      ? "var(--background-2)"
+                      : "var(--chatBackground)"
+                  }`,
+                  color: `${
+                    m.sender._id === user._id ? "#fff" : "var(--text-2)"
+                  }`,
+                  borderRadius: "20px",
+                  padding: "7px 15px",
+                  width: "fit-content",
+                  maxWidth: "70%",
+                  marginTop: `${isSameUser(messages, m, i) ? "2px" : "5px"}`,
+                  marginLeft: isSameSenderMargin(messages, m, i, user._id),
+                }}
+              >
+                {m.content}
+              </span>
+            </Tooltip>
           </div>
         ))}
     </ScrollableFeed>
