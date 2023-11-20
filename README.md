@@ -8,7 +8,7 @@ Make sure you have the latest version of [Node.js](https://nodejs.org/en/downloa
 
 Open Terminal in your choice of folder and perform
 
-```bash
+```terminal
 git clone https://github.com/satwiktiwari22/Minor.git
 ```
 
@@ -31,7 +31,7 @@ npm start
 
 ### Running Client-
 
-```bash
+```terminal
 cd client 
 npm start 
 ```
