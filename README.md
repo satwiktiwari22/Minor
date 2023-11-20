@@ -16,24 +16,24 @@ git clone https://github.com/satwiktiwari22/Minor.git
 Make sure you have opened the project after cloning it.
 Then in the terminal perform the following-
 
-```bash
-npm install //to install all the required dependencies.
+```terminal
+npm install 
 ```
 
 ## Running the Project-
 
 ### Running Server-
 
-```bash
-cd server \\to change the directory to server
-npm start \\to start the server
+```terminal
+cd server 
+npm start 
 ```
 
 ### Running Client-
 
 ```bash
-cd client \\to change the directory to client
-npm start \\to start the client
+cd client 
+npm start 
 ```
 
 
